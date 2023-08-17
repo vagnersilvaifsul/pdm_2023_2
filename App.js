@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import MeuButtom from './src/componentes/MeuButtom';
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   const [cont, setCont] = useState(0);
@@ -28,13 +29,15 @@ export default function App() {
   }, [cont]);
 
   return (
-    <View style={styles.container}>
-      <Text color="blue">Open up App.js to start working on your app!</Text>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text style={{color: 'red'}}>{cont}</Text>
-      <MeuButtom aoClicar={incrementar} texto="Incrementar" />
-      <MeuButtom aoClicar={decrementar} texto="decrementar" />
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        <Text color="blue">Open up App.js to start working on your app!</Text>
+        <Text>Open up App.js to start working on your app!</Text>
+        <Text style={{color: 'red'}}>{cont}</Text>
+        <MeuButtom aoClicar={incrementar} texto="Incrementar" />
+        <MeuButtom aoClicar={decrementar} texto="decrementar" />
+      </View>
+    </NavigationContainer>
   );
 }
 
