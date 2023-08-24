@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import MeuButtom from '../../componentes/MeuButtom';
-import {CommonActions} from '@react-navigation/native';
-// import { Container } from './styles';
+import {COLORS} from '../../assets/colors';
 
 const Home = ({navigation}) => {
   const [cont, setCont] = useState(0);
@@ -43,10 +42,17 @@ const Home = ({navigation}) => {
     <View style={styles.container}>
       <Text color="blue">Open up App.js to start working on your app!</Text>
       <Text>Open up App.js to start working on your app!</Text>
-      <Text style={{color: 'red'}}>{cont}</Text>
-      <MeuButtom aoClicar={incrementar} texto="Incrementar" />
-      <MeuButtom aoClicar={decrementar} texto="decrementar" />
-      <MeuButtom aoClicar={mudarDeScreen} texto="Ir para SignIns" />
+      <Text style={styles.text}>{cont}</Text>
+      <MeuButtom
+        aoClicar={incrementar}
+        texto="Incrementar"
+        cor={COLORS.accent}
+      />
+      <MeuButtom
+        aoClicar={decrementar}
+        texto="decrementar"
+        cor={COLORS.primary}
+      />
     </View>
   );
 };
@@ -59,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: 'white',
+    color: COLORS.accent,
     fontSize: 60,
   },
 });

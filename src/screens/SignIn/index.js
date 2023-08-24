@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,26 +10,36 @@ import {
   Alert,
 } from 'react-native';
 import {COLORS} from '../../assets/colors';
-import auth from '@react-native-firebase/auth';
 import MeuButtom from '../../componentes/MeuButtom';
 import Loading from '../../componentes/Loading';
+import {CommonActions} from '@react-navigation/native';
+import {AuthenticationContext} from '../../context/Authentication';
 
 const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const {storeUserSession, logar} = useContext(AuthenticationContext);
 
   async function entrar() {
-    try {
+    if (email !== '' && password !== '') {
       setLoading(true);
-      await auth().signInWithEmailAndPassword(email, password);
-      setLoading(false);
-      console.log('====================================');
-      console.log('logou!!!!!');
-      console.log('====================================');
-    } catch (error) {
-      setLoading(false);
-      console.error('SignIn, entrar: ' + error);
+      let msg = await logar(email, password);
+      if (msg === 'ok') {
+        await storeUserSession(email, password);
+        setLoading(false);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'Home'}],
+          }),
+        );
+      } else {
+        setLoading(false);
+        Alert.alert('Erro', msg);
+      }
+    } else {
+      Alert.alert('Atenção', 'Preencha todos os campos.');
     }
   }
 
@@ -64,7 +74,7 @@ const SignIn = ({navigation}) => {
             onPress={() => navigation.navigate('ForgotPassWord')}>
             Esqueceu sua senha?
           </Text>
-          <MeuButtom text="ENTRAR" aoClicar={entrar} />
+          <MeuButtom texto="ENTRAR" aoClicar={entrar} cor={COLORS.accent} />
         </View>
         <View style={styles.divInferior}>
           <View style={styles.divOuHr}>
