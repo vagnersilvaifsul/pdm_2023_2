@@ -19,14 +19,13 @@ const SignIn = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const {storeUserSession, logar} = useContext(AuthenticationContext);
+  const {logar} = useContext(AuthenticationContext);
 
   async function entrar() {
     if (email !== '' && password !== '') {
       setLoading(true);
       let msg = await logar(email, password);
       if (msg === 'ok') {
-        await storeUserSession(email, password);
         setLoading(false);
         navigation.dispatch(
           CommonActions.reset({

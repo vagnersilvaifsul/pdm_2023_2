@@ -14,16 +14,6 @@ const Home = ({navigation}) => {
     setCont(cont - 1);
   }
 
-  function mudarDeScreen() {
-    navigation.navigate('SignIn');
-    // navigation.dispatch(
-    //   CommonActions.reset({
-    //     index: 0,
-    //     routes: [{name: 'SignIn'}],
-    //   }),
-    // );
-  }
-
   useEffect(() => {
     console.log('Reagiu na construção do compoenente.');
 

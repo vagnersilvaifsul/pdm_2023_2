@@ -1,6 +1,7 @@
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useState} from 'react';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 export const AuthenticationContext = createContext({});
 
@@ -22,14 +23,64 @@ export const AuthenticationProvider = ({children}) => {
       console.error('SignIn, storeUserSession' + error);
     }
   }
+
+  async function retrieveUserSession() {
+    try {
+      const session = await EncryptedStorage.getItem('user_session');
+      return session !== null ? JSON.parse(session) : null;
+    } catch (e) {
+      console.error('AuthenticationProvider, retrieveUserSession: ' + e);
+    }
+  }
+
   async function logar(email, pass) {
     try {
       await auth().signInWithEmailAndPassword(email, pass);
-      //TODO: buscar dados do user no Firestore
-      setUser(auth().currentUser);
+      if (!auth().currentUser.emailVerified) {
+        return 'Você deve validar seu email para continuar.';
+      }
+      await storeUserSession(email, pass);
+      if (await getUser(pass)) {
+        return 'ok';
+      }
+      return 'Não foi possível buscar seus dados no banco de dados. Por favor, contate o administrador do app.';
+    } catch (e) {
+      return launchServerMessageErro(e);
+    }
+  }
+
+  async function signUp(localUser, pass) {
+    try {
+      await auth().createUserWithEmailAndPassword(localUser.email, pass);
+      await auth().currentUser.sendEmailVerification();
+      await firestore()
+        .collection('users') //vai na coleção
+        .doc(auth().currentUser.uid) //vai do documento pela chave
+        .set(localUser); //salva o objeto no documento
       return 'ok';
     } catch (e) {
       return launchServerMessageErro(e);
+    }
+  }
+
+  //função utilitária
+  async function getUser(pass) {
+    try {
+      let doc = await firestore()
+        .collection('user')
+        .doc(auth().currentUser.uid)
+        .get();
+      if (doc.exists) {
+        console.log('Document data:', doc.data());
+        doc.data().uid = auth().currentUser.uid;
+        doc.data().pass = pass;
+        setUser(doc.data());
+        return doc.data();
+      }
+      return null;
+    } catch (e) {
+      console.error('AuthenticationProvider, getUser');
+      return null;
     }
   }
 
@@ -52,7 +103,8 @@ export const AuthenticationProvider = ({children}) => {
   }
 
   return (
-    <AuthenticationContext.Provider value={{storeUserSession, logar, user}}>
+    <AuthenticationContext.Provider
+      value={{storeUserSession, logar, user, signUp, retrieveUserSession}}>
       {children}
     </AuthenticationContext.Provider>
   );
