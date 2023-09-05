@@ -43,7 +43,7 @@ export const AuthenticationProvider = ({children}) => {
       if (await getUser(pass)) {
         return 'ok';
       }
-      return 'Não foi possível buscar seus dados no banco de dados. Por favor, contate o administrador do app.';
+      return 'Problemas ao buscar o seu perfil. Contate o administrador.';
     } catch (e) {
       return launchServerMessageErro(e);
     }
