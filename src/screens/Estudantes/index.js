@@ -11,7 +11,7 @@ const Estudantes = ({navigation}) => {
 
   function routeEstudante(estudante) {
     console.log(estudante);
-    navigation.navigate('Estudante', {estudante});
+    navigation.navigate('Estudante', estudante);
   }
 
   return (
