@@ -6,6 +6,8 @@ import Home from '../screens/Home';
 import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUp';
 import Preload from '../screens/Preload';
+import Estudantes from '../screens/Estudantes';
+import Estudante from '../screens/Estudante';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -17,6 +19,7 @@ function AppStack() {
         headerShown: false,
       }}>
       <Stack.Screen name="Home" component={Home} />
+      
     </Tab.Navigator>
   );
 }
@@ -31,6 +34,8 @@ function AuthStack() {
       <Stack.Screen name="Preload" component={Preload} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Estudantes" component={Estudantes} />
+      <Stack.Screen name="Estudante" component={Estudante} />
     </Stack.Navigator>
   );
 }
