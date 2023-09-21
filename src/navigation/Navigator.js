@@ -14,12 +14,12 @@ const Tab = createBottomTabNavigator();
 function AppStack() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Estudantes"
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Home" component={Home} />
-      
+      <Tab.Screen name="Estudantes" component={Estudantes} />
+      <Tab.Screen name="Estudante" component={Estudante} />
     </Tab.Navigator>
   );
 }
@@ -34,8 +34,6 @@ function AuthStack() {
       <Stack.Screen name="Preload" component={Preload} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Estudantes" component={Estudantes} />
-      <Stack.Screen name="Estudante" component={Estudante} />
     </Stack.Navigator>
   );
 }

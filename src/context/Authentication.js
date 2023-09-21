@@ -67,7 +67,7 @@ export const AuthenticationProvider = ({children}) => {
   async function getUser(pass) {
     try {
       let doc = await firestore()
-        .collection('user')
+        .collection('users')
         .doc(auth().currentUser.uid)
         .get();
       if (doc.exists) {
@@ -79,7 +79,7 @@ export const AuthenticationProvider = ({children}) => {
       }
       return null;
     } catch (e) {
-      console.error('AuthenticationProvider, getUser');
+      console.error('AuthenticationProvider, getUser' + e);
       return null;
     }
   }
