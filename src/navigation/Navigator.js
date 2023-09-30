@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
+import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -7,6 +9,8 @@ import SignUp from '../screens/SignUp';
 import Preload from '../screens/Preload';
 import Estudantes from '../screens/Estudantes';
 import Estudante from '../screens/Estudante';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {COLORS} from '../assets/colors';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -17,7 +21,16 @@ function AppStack() {
       screenOptions={{
         headerShown: false,
       }}>
-      <Tab.Screen name="Estudantes" component={Estudantes} />
+      <Tab.Screen
+        name="Estudantes"
+        component={Estudantes}
+        options={{
+          tabBarLabel: 'Alunos',
+          tabBarIcon: () => (
+            <Icon name="people" color={COLORS.primary} size={20} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -39,6 +52,7 @@ function AuthStack() {
 const Navigator = () => {
   return (
     <NavigationContainer>
+      <StatusBar backgroundColor={COLORS.primaryDark} />
       <Stack.Navigator
         initialRouteName="AuthStack"
         screenOptions={{
